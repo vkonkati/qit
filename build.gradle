@@ -1,0 +1,93 @@
+
+description = 'qit master build script'
+
+group = 'qit'
+
+version = '0.1-SNAPSHOT'
+
+allprojects {
+
+	ext {
+		glassfishVersion = '3.1.1'
+		jsfVersion = '2.2'
+		mojarraVersion = '2.2.1'
+		primefacesVersion = '3.5'
+		primefaceMobileVersion = '0.9.3'
+		commonsfileuploadVersion = '1.3'
+		eclipseLinkVersion = '2.5.0'
+		hsqldbVersion = '2.2.9'
+		jerseyVersion = '1.17.1'
+		metroVersion = '2.1'
+		javaeeVersion = '6.0'
+		jaxbVersion = '2.2.7'
+		xjcVersion = '2.2.7'
+		jaxrsVersion = '2.0'
+		jerseyVersion = '2.1'
+		slf4jVersion = '1.7.5'
+		logbackVersion = '1.0.13'
+		junitVersion = '4.11'
+	}
+	
+	repositories {
+		mavenCentral()
+		maven {
+			url 'http://repository.primefaces.org'
+		}
+		maven {
+			url 'https://maven.java.net/content/repositories/releases'
+		}
+	}
+}
+
+subprojects {
+
+	configurations {
+		javaee
+		jaxbxjc
+		log
+		junit 
+	}
+	
+	dependencies {
+		
+		jaxbxjc (group: 'com.sun.xml.bind', name: 'jaxb-xjc', version: ext.xjcVersion)
+		jaxbxjc (group: 'com.sun.xml.bind', name: 'jaxb-impl', version: ext.jaxbVersion)
+		
+		log (group: 'org.slf4j', name: 'slf4j-api', version: ext.slf4jVersion)
+		log (group: 'ch.qos.logback', name: 'logback-classic', version: ext.logbackVersion)
+		log (group: 'ch.qos.logback', name: 'logback-core', version: ext.logbackVersion)
+		
+		junit (group: 'junit', name: 'junit', version: ext.junitVersion)
+	}
+	
+	task cleanXjc(type: Delete) {
+		def xjcJavaDir = file('src/xjc/java')
+		delete xjcJavaDir
+	}
+
+	task xjc {
+		ext.xjcJavaDir = file('src/xjc/java')
+		ext.xjcSchemaDir = file('src/main/resources')
+		ext.xjcBindingsFile = file('src/main/resources/bindings.xjb')
+		def xjcTree = fileTree(dir: 'src/main/resources', includes: ['**/*.xjb', '**/*.xsd'])
+		inputs.file xjcTree
+		outputs.dir xjcJavaDir
+		doLast {
+			xjcJavaDir.mkdirs()
+			ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxbxjc.asPath)
+			ant.xjc(destdir: xjcJavaDir.toString(), extension: true, binding: xjcBindingsFile.toString()) {
+				schema(dir: xjcSchemaDir.toString(), includes: "*.xsd")
+			}
+		}
+		onlyIf {
+			!xjcTree.isEmpty()
+		}
+	}
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+}
+
+// EOF

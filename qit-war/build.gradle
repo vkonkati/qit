@@ -1,0 +1,73 @@
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+description = 'Web Application'
+
+sourceSets {
+	xjc {
+		java {
+			srcDir 'src/xjc/java'
+		}
+		resources {
+			srcDir 'src/xjc/resources'
+		}
+	}
+	main {
+		compileClasspath += sourceSets.xjc.runtimeClasspath
+	}
+}
+
+configurations {
+	compile.extendsFrom log
+	testCompile.extendsFrom junit
+}
+
+dependencies {
+	compile project(':qit-util'), project(':qit-jpa'), project(':qit-model'), project(':qit-jaxrs')
+	compile (group: 'javax.faces', name: 'javax.faces-api', version: ext.jsfVersion)
+	compile (group: 'org.glassfish', name: 'javax.faces', version: ext.mojarraVersion)
+	compile (group: 'org.primefaces', name: 'primefaces', version: ext.primefacesVersion)
+	compile (group: 'org.primefaces', name: 'primefaces-mobile', version: ext.primefaceMobileVersion)
+	compile (group: 'commons-fileupload', name: 'commons-fileupload', version: ext.commonsfileuploadVersion)
+	providedCompile (group: 'javax', name: 'javaee-api', version: ext.javaeeVersion)
+	providedCompile (group: 'javax', name: 'javaee-web-api', version: ext.javaeeVersion)
+	providedCompile (group: 'javax', name: 'javaee-endorsed-api', version: ext.javaeeVersion)
+}
+
+
+eclipse {
+     project {
+         //name = 'qit-war'
+         natures 'org.eclipse.jdt.core.javanature'
+         natures 'org.eclipse.wst.jsdt.core.jsNature'
+         buildCommand 'org.eclipse.wst.jsdt.core.javascriptValidator'
+     }
+     classpath {
+         file {
+             withXml { provider ->
+                 def node = provider.asNode()
+                 node.appendNode('classpathentry', [kind: 'con', path: 'org.eclipse.jst.j2ee.internal.module.container'])
+             }
+         }
+         //plusConfigurations += configurations.provided
+     }
+     wtp {
+         facet {
+             file {
+                 withXml { provider ->
+                     def node = provider.asNode()
+                     node.appendNode('fixed', [facet: 'wst.jsdt.web'])
+                     node.appendNode('installed', [facet: 'jst.jsf', version: '2.2'])
+                     node.appendNode('installed', [facet: 'wst.jsdt.web', version: '1.0'])
+                     node.installed.find { it.@facet == 'jst.web' }.@version = '3.0'
+                 }
+             }
+         }
+     }
+}
+
+// EOF
+

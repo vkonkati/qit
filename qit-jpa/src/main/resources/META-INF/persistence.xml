@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="qitPU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<non-jta-data-source>java:comp/env/jdbc/qitDS</non-jta-data-source>
+		<class>qit.jpa.entity.jdbc.QitJarEO</class>
+		<class>qit.jpa.entity.jdbc.QitDriverEO</class>
+		<class>qit.jpa.entity.tomcat.QitPrivilegeEO</class>
+		<class>qit.jpa.entity.tomcat.QitRoleEO</class>
+		<class>qit.jpa.entity.tomcat.QitSubjectEO</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
+			<property name="eclipselink.session.customizer" value="qit.jpa.QitSessionCustomizer"/>
+			<property name="javax.persistence.nonJtaDataSource" value="java:comp/env/jdbc/qitDS"/>
+			<property name="eclipselink.logging.level" value="INFO"/>
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,25 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+description = 'ReST API'
+
+
+dependencies {
+	compile project(':qit-util'), project(':qit-jpa')
+	compile(group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: ext.jaxrsVersion)
+	compile(group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: ext.jerseyVersion)
+	compile(group: 'org.glassfish.jersey.core', name: 'jersey-client', version: ext.jerseyVersion)
+	compile(group: 'org.glassfish.jersey.connectors', name: 'jersey-apache-connector', version: ext.jerseyVersion)
+	compile(group: 'org.glassfish.jersey.media', name: 'jersey-media-json-processing', version: ext.jerseyVersion)
+	compile(group: 'org.glassfish.jersey.media', name: 'jersey-media-moxy', version: ext.jerseyVersion)
+	compile(group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: ext.jerseyVersion)
+	compile(group: 'org.slf4j', name: 'slf4j-api', version: ext.slf4jVersion)
+	compile(group: 'ch.qos.logback', name: 'logback-classic', version: ext.logbackVersion)
+	compile(group: 'ch.qos.logback', name: 'logback-core', version: ext.logbackVersion)
+	testCompile(group: 'junit', name: 'junit', version: ext.junitVersion)
+}
+
+// EOF
+

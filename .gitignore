@@ -1,0 +1,10 @@
+build
+classes
+bin
+.project
+.classpath
+.settings
+.gradle
+.metadata
+gradle.properties
+.DS_Store

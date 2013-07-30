@@ -1,0 +1,32 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+description = 'Utilities'
+
+sourceSets {
+	xjc {
+		java {
+			srcDir 'src/xjc/java'
+		}
+		resources {
+			srcDir 'src/xjc/resources'
+		}
+	}
+	main {
+		compileClasspath += sourceSets.xjc.runtimeClasspath
+	}
+}
+
+configurations {
+	compile.extendsFrom log
+	testCompile.extendsFrom junit
+}
+
+
+dependencies {
+}
+
+// EOF
+

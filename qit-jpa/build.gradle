@@ -1,0 +1,34 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+description = 'Persistence'
+
+sourceSets {
+	xjc {
+		java {
+			srcDir 'src/xjc/java'
+		}
+		resources {
+			srcDir 'src/xjc/resources'
+		}
+	}
+	main {
+		compileClasspath += sourceSets.xjc.runtimeClasspath
+	}
+}
+
+configurations {
+	compile.extendsFrom log
+	testCompile.extendsFrom junit
+}
+
+dependencies {
+	compile project(':qit-util')
+	compile(group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: ext.eclipseLinkVersion)
+	compile(group: 'org.hsqldb', name: 'hsqldb', version: ext.hsqldbVersion)
+}
+
+// EOF
+

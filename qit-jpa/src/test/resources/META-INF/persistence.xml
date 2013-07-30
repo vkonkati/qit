@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="qitTestHsqlPU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<non-jta-data-source>java:comp/env/jdbc/qitDS</non-jta-data-source>
+		<class>qit.jpa.entity.jdbc.QitJarEO</class>
+		<class>qit.jpa.entity.jdbc.QitDriverEO</class>
+		<class>qit.jpa.entity.tomcat.QitPrivilegeEO</class>
+		<class>qit.jpa.entity.tomcat.QitRoleEO</class>
+		<class>qit.jpa.entity.tomcat.QitSubjectEO</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<!-- update /tmp/.qit to QIT_HOME env location -->
+			<property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
+			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbc.JDBCDriver"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/tmp/.qit/data/imdb/qitTestHsqlPU;shutdown=true"/>
+			<property name="javax.persistence.jdbc.user" value="SA"/>
+			<property name="javax.persistence.jdbc.password" value=""/>
+			<property name="eclipselink.logging.level" value="FINEST"/>
+			<property name="eclipselink.logging.file" value="/tmp/.qit/log/qitTestHsqlPU.log"/>
+			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="qit-create-ddl-eclipselink-hsql.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="qit-drop-ddl-eclipselink-hsql.sql"/>
+            <!--
+            <property name="eclipselink.ddl-generation.output-mode" value="sql-script"/>
+            -->
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+            <property name="eclipselink.application-location" value="/tmp/.qit/log"/>
+            <property name="eclipselink.target-server" value="None"/>
+		</properties>
+	</persistence-unit>
+</persistence>
